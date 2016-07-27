@@ -1,0 +1,22 @@
+# Maintainer tangfeixiong <fxtang@qingyuanos.com>
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    qingyuanos.io/catalog-by: '{"version": "v1alpha", "lib": "https://github.com/qingyuancloud/kube-harpoon", "repo": "https://github.com/pingcap/pd"}'
+  labels:
+    app: pd-server
+    developer: pingcap
+    heritage: qingyuancloud
+    project: pd
+  name: pd-server
+spec:
+  ports:
+  - name: lstn
+    nodePort: 30051 # Optional, or Kubernetes generate a random port if not customized
+    port: 1234
+    protocol: TCP
+  selector:
+    app: pd-server
+  type: NodePort

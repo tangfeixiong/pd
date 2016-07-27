@@ -1,0 +1,41 @@
+# Maintainer tangfeixiong <fxtang@qingyuanos.com>
+---
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  annotations:
+    qingyuanos.io/catalog-by: '{"version": "v1alpha", "lib": "https://github.com/qingyuancloud/kube-harpoon", "repo": "https://github.com/pingcap/pd"}'
+  labels:
+    app: pd-server
+    developer: pingcap
+    heritage: qingyuancloud
+    project: pd
+  name: pd-server
+  # namespace: harpoon
+spec:
+  replicas: 1
+  selector:
+    app: pd-server
+  template:
+    metadata:
+      labels:
+        app: pd-server
+        developer: pingcap
+        heritage: qingyuancloud
+        project: pd
+      name: pd-server
+    spec:
+      containers:
+      - command:
+        - /pd-server
+        - --etcd=$(ETCD_V3_SINGLE_SERVICE_HOST):$(ETCD_V3_SINGLE_SERVICE_PORT)
+        env:
+        - name: Q8SAD_ETCD_ENV
+          value: ETCD_V3_SINGLE_SERVICE # _HOST _PORT
+        image: tangfeixiong/pd-server
+        imagePullPolicy: IfNotPresent
+        name: pd-server
+        ports:
+        - containerPort: 1234
+          name: lstn
+          protocol: TCP
